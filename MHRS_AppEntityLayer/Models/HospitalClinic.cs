@@ -1,0 +1,30 @@
+﻿using MHRS_ApplicationEntityLayer.IdentityModels;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MHRS_ApplicationEntityLayer.Models
+{
+    [Table("HospitalClinics")]
+    public class HospitalClinic : Base<int>
+    {
+        //Hastane ile ilişki kuruldu
+        public int HospitalId { get; set; }
+        [ForeignKey("HospitalId")]
+        public virtual Hospital Hospital { get; set; }
+        //Klinikle ile ilişki kuruldu
+        public int ClinicId { get; set; }
+        [ForeignKey("ClinicId")]
+        public virtual Clinic Clinic { get; set; }
+        //Doktor ile ilişki kuruldu.
+
+        public string DoctorId { get; set; }
+        [ForeignKey("DoctorId")]
+        public virtual AppUser Doctor { get; set; }
+        public virtual ICollection<Appointment> Appointments { get; set; }
+        public virtual ICollection<AppointmentHour> AppointmentHours { get; set; }
+    }
+}
