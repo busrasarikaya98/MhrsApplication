@@ -1607,6 +1607,41 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "MHRS_ApplicationDataAccessLayer/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "AutoMapper": "9.0.0",
+          "AutoMapper.Extensions.Microsoft.DependencyInjection": "7.0.0",
+          "MHRS_ApplicationEntityLayer": "1.0.0",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.14",
+          "Microsoft.EntityFrameworkCore": "5.0.14",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.14"
+        },
+        "compile": {
+          "bin/placeholder/MHRS_ApplicationDataAccessLayer.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/MHRS_ApplicationDataAccessLayer.dll": {}
+        }
+      },
+      "MHRS_ApplicationEntityLayer/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "AutoMapper": "9.0.0",
+          "AutoMapper.Extensions.Microsoft.DependencyInjection": "7.0.0",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.14",
+          "Microsoft.EntityFrameworkCore": "5.0.14",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.14"
+        },
+        "compile": {
+          "bin/placeholder/MHRS_ApplicationEntityLayer.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/MHRS_ApplicationEntityLayer.dll": {}
+        }
       }
     }
   },
@@ -5998,12 +6033,24 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
+    },
+    "MHRS_ApplicationDataAccessLayer/1.0.0": {
+      "type": "project",
+      "path": "../MHRS_ApplicationDataAccessLayer/MHRS_ApplicationDataAccessLayer.csproj",
+      "msbuildProject": "../MHRS_ApplicationDataAccessLayer/MHRS_ApplicationDataAccessLayer.csproj"
+    },
+    "MHRS_ApplicationEntityLayer/1.0.0": {
+      "type": "project",
+      "path": "../MHRS_AppEntityLayer/MHRS_ApplicationEntityLayer.csproj",
+      "msbuildProject": "../MHRS_AppEntityLayer/MHRS_ApplicationEntityLayer.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net5.0": [
       "AutoMapper >= 9.0.0",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 7.0.0",
+      "MHRS_ApplicationDataAccessLayer >= 1.0.0",
+      "MHRS_ApplicationEntityLayer >= 1.0.0",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 5.0.14",
       "Microsoft.EntityFrameworkCore >= 5.0.14",
       "Microsoft.EntityFrameworkCore.Design >= 5.0.14",
@@ -6037,7 +6084,14 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\303BUSRA_AKSAM\\source\\repos\\MHRS_Application\\MHRS_AppEntityLayer\\MHRS_ApplicationEntityLayer.csproj": {
+              "projectPath": "C:\\Users\\303BUSRA_AKSAM\\source\\repos\\MHRS_Application\\MHRS_AppEntityLayer\\MHRS_ApplicationEntityLayer.csproj"
+            },
+            "C:\\Users\\303BUSRA_AKSAM\\source\\repos\\MHRS_Application\\MHRS_ApplicationDataAccessLayer\\MHRS_ApplicationDataAccessLayer.csproj": {
+              "projectPath": "C:\\Users\\303BUSRA_AKSAM\\source\\repos\\MHRS_Application\\MHRS_ApplicationDataAccessLayer\\MHRS_ApplicationDataAccessLayer.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -20,4 +20,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MHRS_AppEntityLayer\MHRS_ApplicationEntityLayer.csproj" />
+    <ProjectReference Include="..\MHRS_ApplicationDataAccessLayer\MHRS_ApplicationDataAccessLayer.csproj" />
+  </ItemGroup>
+
 </Project>
