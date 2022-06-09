@@ -17,11 +17,32 @@ namespace MHRS_ApplicationBusinessLayer.Concretes
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-
         public DistrictManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+        }
+
+        public IResult Add(DistrictViewModel district)
+        {
+            try
+            {
+                District newDistrict = _mapper.Map<DistrictViewModel, District>(district);
+
+                var insertResult = _unitOfWork.DistrictRepository.Add(newDistrict);
+
+                return insertResult ?
+                    new SuccessResult("İlçe eklendi!")
+                    :
+                    new ErrorResult("İlçe ekleme başarısız oldu!");
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
         public IDataResult<ICollection<DistrictViewModel>> GetAllDistricts(Expression<Func<DistrictViewModel, bool>> filter)
@@ -29,9 +50,10 @@ namespace MHRS_ApplicationBusinessLayer.Concretes
             try
             {
                 var districtFilter = _mapper.Map<Expression<Func<DistrictViewModel, bool>>, Expression<Func<District, bool>>>(filter);
+
                 var districts = _unitOfWork.DistrictRepository.GetAll(districtFilter);
                 var data = _mapper.Map<IQueryable<District>, ICollection<DistrictViewModel>>(districts);
-                //mesaj vermeden sadece data gönderme
+                //Mesaj vermedik :D sadece datayı gönderdik.
                 return new SuccessDataResult<ICollection<DistrictViewModel>>(data);
             }
             catch (Exception)

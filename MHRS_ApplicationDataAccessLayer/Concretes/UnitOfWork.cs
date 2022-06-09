@@ -21,6 +21,7 @@ namespace MHRS_ApplicationDataAccessLayer.Concretes
             HospitalRepository = new HospitalRepository(_myContext);
             AppointmentRepository = new AppointmentRepository(_myContext);
             AppointmentHourRepository = new AppointmentHourRepository(_myContext);
+            DenemeRepository = new DenemeRepository(_myContext);
         }
 
         public ICityRepository CityRepository {get; private set;}
@@ -36,6 +37,8 @@ namespace MHRS_ApplicationDataAccessLayer.Concretes
         public IAppointmentHourRepository AppointmentHourRepository {get; private set;}
 
         public IAppointmentRepository AppointmentRepository {get; private set;}
+
+        public IDenemeRepository DenemeRepository { get; private set; }
 
         public void Dispose()
         {

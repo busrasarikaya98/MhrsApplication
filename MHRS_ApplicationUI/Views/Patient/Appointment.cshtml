@@ -1,0 +1,254 @@
+﻿@{
+    ViewData["Title"] = "Appointment";
+    Layout = "~/Views/Shared/_LayoutMHRS.cshtml";
+}
+<div class="row">
+    @*geri butonu yerleştirilebilir*@
+</div>
+
+<div class="row" style="background-color:whitesmoke; border-radius:4px; padding:10px;">
+    <div class="col-12">
+        <form asp-controller="Patient" asp-action="???"
+              method="post">
+            <div class="form-group">
+                <span class="text-danger"
+                      style="font-weight:bold;margin-right:3px;">*</span>
+                <label for="City" style="font-weight:bold;">İL</label>
+                <select id="CitySelect" name="City" class="form-control">
+                    <option selected value="0">***İl Seçiniz***</option>
+                    @foreach (var item in ViewBag.cities)
+                    {
+                        <option value="@item.Id">@item.CityName</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <span class="text-danger"
+                      style="font-weight:bold;margin-right:3px;">*</span>
+                <label for="District" style="font-weight:bold;">İLÇE</label>
+                <select id="DistrictSelect" name="District" class="form-control">
+                    <option selected value="0">***İlçe Seçiniz***</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <span class="text-danger"
+                      style="font-weight:bold;margin-right:3px;">*</span>
+                <label for="Clinic" style="font-weight:bold;">KLİNİK</label>
+                <select id="ClinicSelect" name="Clinic" class="form-control">
+                    <option selected value="0">***Klinik Seçiniz***</option>
+                    @foreach (var item in ViewBag.clinics)
+                    {
+                        <option value="@item.Id">@item.ClinicName</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <span class="text-danger"
+                      style="font-weight:bold;margin-right:3px;">*</span>
+                <label for="Hospital" style="font-weight:bold;">HASTANE</label>
+                <select id="HospitalSelect" name="Hospital" class="form-control">
+                    <option selected value="0">***Hastane Seçiniz***</option>
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <span class="text-danger"
+                      style="font-weight:bold;margin-right:3px;">*</span>
+                <label for="Doctor" style="font-weight:bold;">DOKTOR</label>
+                <select id="DoctorSelect" name="Doctor" class="form-control">
+                    <option selected value="0">***Doktor Seçiniz***</option>
+
+                </select>
+            </div>
+
+            <div class="col-12">
+                <div class="col-6" style="float:left">
+                    <input id="searchAppointment" value="Randevu Ara"
+                           class="btn btn-block btn-default"
+                           type="button"
+                           style="background-color:white;color:red;border:1px solid red" />
+                </div>
+
+                <div class="col-6" style="float:right">
+                    <input id="clearBtn" value="Temizle"
+                           class="btn btn-block btn-default"
+                           type="button"
+                           style="background-color:red;color:white;" />
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+@section MhrsScripts{
+    <script>
+        $(document).ready(function () {
+            //sayfa açıldığında ilçe hastane doktor ve randevu ara pasif halde olacaktır
+            $('#DistrictSelect').attr("disabled", true);
+            $('#HospitalSelect').attr("disabled", true);
+            $('#DoctorSelect').attr("disabled", true);
+            $('#searchAppointment').attr("disabled", true);
+            //document.getElementById("searchAppointment")
+        });
+        //CitySelectten il seçildiğinde bu fonksiyon çalışsın
+        //change eventın adıdır
+        $('#CitySelect').on('change', function () {
+            //ilçe combosu temizlensin
+            var $district = $('#DistrictSelect');
+            $district.empty();
+            $district.append("<option selected value='0'>***İlçe Seçiniz***</option>");
+            //hastane combosu temizlensin
+            var $hospital = $('#HospitalSelect');
+            //$('#HospitalSelect').empty();
+            $hospital.empty();
+            $hospital.append("<option selected value='0'>***Hastane Seçiniz***</option>");
+            //doktor combosu temizlensin
+            var $doctor = $('#DoctorSelect');
+            $doctor.empty();
+            $doctor.append("<option selected value='0'>***Doktor Seçiniz***</option>");
+            //il değiştiğinde klinik combosunda klinik seçiniz optionu aktif olsun
+            $('#ClinicSelect').val(0).trigger('change');
+            //hangi ili seçtiğini tutalım
+            //this CitySelect idsine sahip elementi yani il combosunu temsil eder.
+            var cityId = this.value; //istanbulun idsi gelecek
+            //il combosundan seçilen değer sıfırdan büyükse
+            //aşağıdaki ajax aracılığıyla seçili ile ait ilçeleri getirip ilçe combosunun içine eklesin
+            if (cityId > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: '/City/GetCityDistricts/' + cityId,
+                    success: function (response) {
+                        //eğer başarılı bir dönüş olursa
+                        //gelen json datayı ilçe combosuna ekleyeceğiz
+                        $("#DistrictSelect").attr("disabled", false);
+                        $("#DistrictSelect").empty();
+                        $("#DistrictSelect").append("<option selected value='0'>***FARKETMEZ***</option>");
+                        //response ile json gelen datayı döngü ile tek tek dönelim
+                        $.each(response.data, function () {
+                            $("#DistrictSelect")
+                                .append($("<option />").val(this.id).text(this.districtName));
+                        });
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        alert(err);
+                        $("#DistrictSelect").empty();
+                        $("#DistrictSelect").append("<option selected value='0'>***İlçe Seçiniz***</option>");
+                        $("#DistrictSelect").attr("disabled", true);
+                    }
+                });
+            }
+        });
+        //ilçe combosunda ilçe seçilirse bu fonksiyon çalışacak
+        $("#DistrictSelect").on("change", function () {
+            // hastane combosu temizlensin
+            $("#HospitalSelect").empty();
+            $("#HospitalSelect").append("<option selected value='0'>***Hastane Seçiniz***</option>");
+            //doktor combosu temizlensin
+            $("#DoctorSelect").empty();
+            $("#DoctorSelect").append("<option selected value='0'>***Doktor Seçiniz***</option>");
+            //klinik combosunda Klinik Seçiniz seçili olarak gelsin
+            $("#ClinicSelect").val(0).trigger("change");
+        });
+        ////klinik combosundan bir klinik seçilirse
+        $("#ClinicSelect").on("change", function () {
+            // hastane combosu temizlensin
+            $("#HospitalSelect").empty();
+            $("#HospitalSelect").append("<option selected value='0'>***Hastane Seçiniz***</option>");
+            //doktor combosu temizlensin
+            $("#DoctorSelect").empty();
+            $("#DoctorSelect").append("<option selected value='0'>***Doktor Seçiniz***</option>");
+            //hangi ilçe seçilmiş bunu bir değişkene alalım
+            var districtId = $("#DistrictSelect").val(); //Kadıköy --> id:500
+            var clinicId = this.value; // KBB--> id:12
+            if (clinicId > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: '/Hospital/GetHospitalsByClinicIdandDistrictId?clinicId=' + clinicId + '&districtId=' + districtId,
+                    success: function (response) {
+                        $("#HospitalSelect").attr("disabled", false);
+                        $("#HospitalSelect").empty();
+                        $("#HospitalSelect").append("<option selected value='0'>***FARKETMEZ***</option>");
+                        //jquery foreach döngüsü
+                        $.each(response.data, function () {
+                            $("#HospitalSelect").append($("<option />").val(this.id).text(this.hospitalName));
+                        });
+                    },
+                    error: function (err) {
+                        alert(err);
+                        console.log(err);
+                        $("#HospitalSelect").empty();
+                        $("#HospitalSelect").append("<option selected value='0'>***Hastane Seçiniz***</option>");
+                        $("#HospitalSelect").attr("disabled", true);
+                    }
+                });
+            }
+            if ($("#CitySelect").val() > 0 && $("#ClinicSelect").val() > 0) {
+                //il ve klinik seçili ise randevu ara butonu aktifleşsin
+                $("#searchAppointment").attr("disabled", false);
+            }
+        });
+        //Hastane combosundan bir hastane seçilirse bu fonksiyon çalışsın
+        $("#HospitalSelect").on("change", function () {
+            //doktor combosu temizlensin
+            $("#DoctorSelect").empty();
+            $("#DoctorSelect").append("<option selected value='0'>***Doktor Seçiniz***</option>");
+            //hangi klinik ve hangi hastane seçilmiş
+            var clinicId = $("#ClinicSelect").val();
+            var hospitalId = $("#HospitalSelect").val();
+            if (hospitalId > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: '/Hospital/GetDoctorsByHospitalClinicData?clinicId=' +
+                        clinicId + "&hospitalId=" + hospitalId,
+                    success: function (response) {
+                        $("#DoctorSelect").empty();
+                        $("#DoctorSelect").attr("disabled", false);
+                        $("#DoctorSelect").append("<option selected value='0' data-userid=''>***FARKETMEZ***</option>");
+                        $.each(response.data, function () {
+                            var option = "<option data-userid='" + this.id + "'  value='" + this.id + "'> " + this.name + " " + this.surname + "</option>";
+                            $("#DoctorSelect").append(option);
+                        });
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        alert(err);
+                        $("#DoctorSelect").empty();
+                        $("#DoctorSelect").append("<option selected value='0' data-userid=''>***Doktor Seçiniz***</option>");
+                        $("#DoctorSelect").attr("disabled", true);
+                    }
+                });
+            }
+        });
+        //randevu ara butonuna tıklanıldığında seçili değerlere göre arama yapılsın
+        $("#searchAppointment").on('click', function () {
+            //seçili il
+            var cityId = $("#CitySelect").val();
+            //seçili ilçe
+            var districtId = $("#DistrictSelect").val();
+            //seçili klinik
+            var clinicId = $("#ClinicSelect").val();
+            //seçili hsatane
+            var hospitalId = $("#HospitalSelect").val();
+            //seçili doktor
+            var doctorId = $("#DoctorSelect").find(':selected').attr('data-userid');
+            window.open('/Patient/FindAppointment?cityId=' + cityId
+                + "&districtId=" + districtId + "&clinicId=" + clinicId
+                + "&hospitalId=" + hospitalId + "&doctorId=" + doctorId, "_self");
+        });
+        //temizle butonu
+        $("#clearBtn").on('click', function () {
+            //iller combosunda il seçiniz seçili hale gelince
+            // diğerleri de resetlenecek
+            //çünkü hepsi birbirine bağlı
+            $("#CitySelect").val(0).trigger('change');
+        });
+    </script>
+
+
+}

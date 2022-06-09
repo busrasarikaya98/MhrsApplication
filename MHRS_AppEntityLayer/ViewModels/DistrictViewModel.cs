@@ -10,7 +10,7 @@ namespace MHRS_ApplicationEntityLayer.ViewModels
 {
     public class DistrictViewModel
     {
-        public byte Id { get; set; }
+        public int Id { get; set; }
         public DateTime CreatedDate { get; set; }
         [Required]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "İlçe adı en az 2 en çok 50 karakter olmalıdır!")]

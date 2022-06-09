@@ -11,6 +11,11 @@ namespace MHRS_ApplicationBusinessLayer.Abstracts
 {
     public interface IClinicService
     {
+        // Bu servise içinde ekleme silme güncelleme vb metotlar imzalanabilir
+        // Ancak zaman kısıtlı old. için sadece ihtiyacımız olanı yazalım
+
         IDataResult<ICollection<ClinicViewModel>> GetAllClinics(Expression<Func<ClinicViewModel, bool>> filter);
+
+        IResult Add(ClinicViewModel clinic);
     }
 }

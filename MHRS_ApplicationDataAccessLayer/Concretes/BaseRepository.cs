@@ -85,7 +85,7 @@ namespace MHRS_ApplicationDataAccessLayer.Concretes
                         query = query.Include(item); //inner join
                     }
                 }
-                return query;
+                return query.AsNoTracking();
             }
             catch (Exception)
             {

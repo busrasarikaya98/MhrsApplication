@@ -16,6 +16,6 @@ namespace MHRS_ApplicationDataAccessLayer.Abstracts
         IHospitalClinicRepository HospitalClinicRepository { get; }
         IAppointmentHourRepository AppointmentHourRepository { get; }
         IAppointmentRepository AppointmentRepository { get; }
-        object HospitalClinicRepo { get; }
+        IDenemeRepository DenemeRepository { get; }
     }
 }

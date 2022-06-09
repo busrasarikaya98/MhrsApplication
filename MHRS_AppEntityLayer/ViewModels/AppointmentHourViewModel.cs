@@ -17,6 +17,7 @@ namespace MHRS_ApplicationEntityLayer.ViewModels
         [Required]
         public int HospitalClinicId { get; set; }
         public HospitalClinicViewModel HospitalClinic { get; set; }
+        public bool AppointmentStatus { get; set; }
         //viewmodel virtual olmaz, virtual ilişki kurarken yazılır burada datanın kendisi olmalı
     }
 }

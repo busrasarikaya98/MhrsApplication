@@ -24,6 +24,25 @@ namespace MHRS_ApplicationBusinessLayer.Concretes
             _mapper = mapper;
         }
 
+        public IResult Add(ClinicViewModel clinic)
+        {
+            try
+            {
+                Clinic newClinic = _mapper.Map<ClinicViewModel, Clinic>(clinic);
+                var insertResult = _unitOfWork.ClinicRepository.Add(newClinic);
+                return insertResult ?
+                    new SuccessResult("Klinik eklendi!")
+                    :
+                    new ErrorResult("Klinik ekleme başarısız oldu!");
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public IDataResult<ICollection<ClinicViewModel>> GetAllClinics(Expression<Func<ClinicViewModel, bool>> filter)
         {
             try

@@ -3,6 +3,7 @@ using MHRS_ApplicationEntityLayer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +11,11 @@ namespace MHRS_ApplicationBusinessLayer.Abstracts
 {
     public interface IAppointmentService
     {
+        IDataResult<ICollection<AppointmentViewModel>> GetAll
+           (Expression<Func<AppointmentViewModel, bool>> filter);
+        IResult Add(AppointmentViewModel apppointment);
+        IResult Update(AppointmentViewModel apppointment);
+
         //Geçmiş ve iptal Randevuları getir
         /// <summary>
         /// Bu metot hastaya ait geçmiş ve iptal randevuları getirir
@@ -25,11 +31,12 @@ namespace MHRS_ApplicationBusinessLayer.Abstracts
         /// <param name="patientId"></param>
         /// <returns></returns>
         IDataResult<ICollection<AppointmentViewModel>> GetUpComingAppoinments(string patientId);
+        //IDataResult<ICollection<AppointmentViewModel>> Update(AppointmentViewModel appointment);
 
 
         //idlere göre appointmetn getir
         /// <summary>
-        ///  Bu metot kendisine gönderilen hastaya, hastaneye, kliniğe, randevu tarihine ve saatine göre data çeker.
+        /// Bu metot kendisine gönderilen hastaya, hastaneye, kliniğe, randevu tarihine ve saatine göre data çeker.
         /// </summary>
         /// <param name="patientId"></param>
         /// <param name="hospitalClinicId"></param>

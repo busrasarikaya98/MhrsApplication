@@ -251,6 +251,26 @@ namespace MHRS_ApplicationDataAccessLayer.Migrations
                     b.ToTable("Clinics");
                 });
 
+            modelBuilder.Entity("MHRS_ApplicationEntityLayer.Models.Deneme", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Mesaj")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuartzTimerDenemeler");
+                });
+
             modelBuilder.Entity("MHRS_ApplicationEntityLayer.Models.District", b =>
                 {
                     b.Property<int>("Id")

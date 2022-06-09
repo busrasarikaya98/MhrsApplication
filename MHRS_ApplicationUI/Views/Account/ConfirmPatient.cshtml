@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewData["Title"] = "ConfirmPatient";
+    Layout = "~/Views/Shared/_LayoutAccountMHRS.cshtml";
+}
+
+@if (ViewBag.ConfirmPatientError != null)
+{
+    <div>
+        <h4 class="text-danger">@ViewBag.ConfirmPatientError</h4>
+    </div>
+}
+

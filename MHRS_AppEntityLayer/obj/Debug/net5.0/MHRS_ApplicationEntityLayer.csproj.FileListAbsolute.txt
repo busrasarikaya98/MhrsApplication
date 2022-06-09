@@ -4,7 +4,6 @@ C:\Users\303BUSRA_AKSAM\source\repos\MHRS_Application\MHRS_AppEntityLayer\bin\De
 C:\Users\303BUSRA_AKSAM\source\repos\MHRS_Application\MHRS_AppEntityLayer\bin\Debug\net5.0\MHRS_ApplicationEntityLayer.dll
 C:\Users\303BUSRA_AKSAM\source\repos\MHRS_Application\MHRS_AppEntityLayer\bin\Debug\net5.0\ref\MHRS_ApplicationEntityLayer.dll
 C:\Users\303BUSRA_AKSAM\source\repos\MHRS_Application\MHRS_AppEntityLayer\bin\Debug\net5.0\MHRS_ApplicationEntityLayer.pdb
-C:\Users\303BUSRA_AKSAM\source\repos\MHRS_Application\MHRS_AppEntityLayer\obj\Debug\net5.0\MHRS_ApplicationEntityLayer.csproj.AssemblyReference.cache
 C:\Users\303BUSRA_AKSAM\source\repos\MHRS_Application\MHRS_AppEntityLayer\obj\Debug\net5.0\MHRS_ApplicationEntityLayer.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\303BUSRA_AKSAM\source\repos\MHRS_Application\MHRS_AppEntityLayer\obj\Debug\net5.0\MHRS_ApplicationEntityLayer.AssemblyInfoInputs.cache
 C:\Users\303BUSRA_AKSAM\source\repos\MHRS_Application\MHRS_AppEntityLayer\obj\Debug\net5.0\MHRS_ApplicationEntityLayer.AssemblyInfo.cs
@@ -13,3 +12,4 @@ C:\Users\303BUSRA_AKSAM\source\repos\MHRS_Application\MHRS_AppEntityLayer\obj\De
 C:\Users\303BUSRA_AKSAM\source\repos\MHRS_Application\MHRS_AppEntityLayer\obj\Debug\net5.0\ref\MHRS_ApplicationEntityLayer.dll
 C:\Users\303BUSRA_AKSAM\source\repos\MHRS_Application\MHRS_AppEntityLayer\obj\Debug\net5.0\MHRS_ApplicationEntityLayer.pdb
 C:\Users\303BUSRA_AKSAM\source\repos\MHRS_Application\MHRS_AppEntityLayer\obj\Debug\net5.0\MHRS_ApplicationEntityLayer.genruntimeconfig.cache
+C:\Users\303BUSRA_AKSAM\source\repos\MHRS_Application\MHRS_AppEntityLayer\obj\Debug\net5.0\MHRS_ApplicationEntityLayer.csproj.AssemblyReference.cache

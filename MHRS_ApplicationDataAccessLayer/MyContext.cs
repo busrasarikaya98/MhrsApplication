@@ -22,6 +22,7 @@ namespace MHRS_ApplicationDataAccessLayer
         public virtual DbSet<District> Districts { get; set; }
         public virtual DbSet<Hospital> Hospitals { get; set; }
         public virtual DbSet<HospitalClinic> HospitalClinics { get; set; }
+        public virtual DbSet<Deneme> Deneme { get; set; }
         protected override void OnModelCreating (ModelBuilder builder)
         {
             //base.OnModelCreating(builder);

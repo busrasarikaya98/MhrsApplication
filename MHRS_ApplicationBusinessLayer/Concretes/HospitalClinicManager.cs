@@ -1,17 +1,18 @@
-﻿using AutoMapper;
-using MHRS_ApplicationBusinessLayer.Abstracts;
-using MHRS_ApplicationDataAccessLayer.Abstracts;
-using MHRS_ApplicationEntityLayer.Models;
-using MHRS_ApplicationEntityLayer.ResultModels;
-using MHRS_ApplicationEntityLayer.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 
-namespace MHRS_ApplicationBusinessLayer.Concretes
+using System.Linq.Expressions;
+using MHRS_ApplicationBusinessLayer.Abstracts;
+using MHRS_ApplicationDataAccessLayer.Abstracts;
+using MHRS_ApplicationEntityLayer.ViewModels;
+using MHRS_ApplicationEntityLayer.ResultModels;
+using MHRS_ApplicationEntityLayer.Models;
+
+namespace MHRS303BusinessLayer.Concretes
 {
     public class HospitalClinicManager : IHospitalClinicService
     {
@@ -27,9 +28,11 @@ namespace MHRS_ApplicationBusinessLayer.Concretes
         {
             try
             {
+
                 var hospitalClinicFilter = _mapper.Map<Expression<Func<HospitalClinicViewModel, bool>>, Expression<Func<HospitalClinic, bool>>>(filter);
 
-                var hospitalClinics = _unitOfWork.HospitalClinicRepository.GetAll(hospitalClinicFilter);
+                var hospitalClinics = _unitOfWork.HospitalClinicRepository.GetAll(hospitalClinicFilter, 
+                    includeEntities: "Clinic,Hospital,Doctor");
 
                 var data = _mapper.Map<IQueryable<HospitalClinic>, ICollection<HospitalClinicViewModel>>(hospitalClinics);
                 //Mesaj vermedik :D sadece datayı gönderdik.

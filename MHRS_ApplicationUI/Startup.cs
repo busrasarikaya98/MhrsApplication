@@ -1,7 +1,12 @@
-using AutoMapper;
-using MHRS_ApplicationDataAccessLayer;
-using MHRS_ApplicationEntityLayer.IdentityModels;
+﻿using AutoMapper;
 using MHRS_ApplicationEntityLayer.Mappings;
+using MHRS_ApplicationBusinessLayer.Abstracts;
+using MHRS_ApplicationBusinessLayer.Concretes;
+using MHRS_ApplicationBusinessLayer.EMailService;
+using MHRS_ApplicationDataAccessLayer;
+using MHRS_ApplicationDataAccessLayer.Abstracts;
+using MHRS_ApplicationDataAccessLayer.Concretes;
+using MHRS_ApplicationEntityLayer.IdentityModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,8 +19,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MHRS303BusinessLayer.Concretes;
+using AutoMapper.Extensions.ExpressionMapping;
 
-namespace MHRS_ApplicationUI
+namespace MHRS303UI
 {
     public class Startup
     {
@@ -29,20 +36,39 @@ namespace MHRS_ApplicationUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //aspnet core un connection string ba�lant�s�n� yapabilmesi i�in
-            //servislere dbcontexti eklemek gerekir
-            services.AddDbContext<MyContext>(options=>
+            //Aspnet mvc core'un connection string baðlantýsýný yapabilmesi için 
+            //servislere dbcontexti eklemek gerekiyor.
+            services.AddDbContext<MyContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("LocalConnection"));
             });
-            services.AddControllersWithViews();
-            services.AddRazorPages();
-            services.AddMvc();
+
+            //IEmailSenderService gördüðün zaman 
+            //EmailSenderManager isimli nesneden türet
+
+            services.AddSingleton<IEmailSenderService, EmailSenderManager>();
+            services.AddScoped<ICityService, CityManager>();
+            services.AddScoped<IClinicService, ClinicManager>();
+            services.AddScoped<IDistrictService, DistrictManager>();
+            services.AddScoped<IHospitalClinicService, HospitalClinicManager>();
+            services.AddScoped<IAppointmentService, AppointmentManager>();
+            services.AddScoped<IAppointmentHourService, AppointmentHourManager>();
+            services.AddScoped<IHospitalService, HospitalManager>();
+            services.AddScoped<IDenemeService, DenemeManager>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();  // bu en aşağıda kalsın hep
+
+            //services.AddControllersWithViews();
+            services.AddControllersWithViews()
+               .AddNewtonsoftJson(options =>
+               options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+           );
+            services.AddRazorPages();//razor sayfaları için
+            services.AddMvc(); //TODO: bunsuz yapabilir misin? 
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(60); //oturum kapanma s�resi
+                options.IdleTimeout = TimeSpan.FromSeconds(60); //oturum süresi
             });
-            services.AddIdentity<AppUser,AppRole>(options =>
+            services.AddIdentity<AppUser, AppRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
                 options.Password.RequiredLength = 4;
@@ -50,14 +76,24 @@ namespace MHRS_ApplicationUI
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireDigit = false;
-                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.@";
+                options.User.AllowedUserNameCharacters =
+               "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.-@";
             }).AddDefaultTokenProviders().AddEntityFrameworkStores<MyContext>();
+
             //Mapleme
-            services.AddAutoMapper(typeof(Maps));
+            //services.AddAutoMapper(typeof(Maps));
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddExpressionMapping(); //expressionları maple (filterın maplenmesini sağlar)
+                cfg.AddProfile(typeof(Maps));
+            });
+
         }
 
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, RoleManager<AppRole> roleManager, ICityService cityManager, IDistrictService districtManager,
+            IClinicService clinicManager)
         {
             if (env.IsDevelopment())
             {
@@ -70,18 +106,29 @@ namespace MHRS_ApplicationUI
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
-            app.UseStaticFiles(); //wwwroot klas�r�ne eri�ebilmek i�in
+            app.UseStaticFiles(); // wwwroot klasörüne eriþebilmek için
 
-            app.UseRouting(); //route mekanizma
-            app.UseSession(); //sessionu kullanmak i�in
-            app.UseAuthorization(); //[Authorize] attribute i�in
-            app.UseAuthentication(); //login ve logout i�lemleri i�in
+            app.UseRouting(); // route mekanizma
+            app.UseSession(); // Session'ý kullanmak için
+
+            app.UseAuthentication(); // Login ve Logout iþlemleri için 
+            app.UseAuthorization(); // [Authorize] attribute için
+
+
+
+            //Proje ilk ayaða kalktýðýnda sistemdeki roller oluþsun
+            CreateDefaultData.CreateData.Create(roleManager, env, cityManager, districtManager, clinicManager);
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{area=Doctor}/{controller=Account}/{action=Login}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

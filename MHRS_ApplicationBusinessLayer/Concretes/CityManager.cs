@@ -65,8 +65,22 @@ namespace MHRS_ApplicationBusinessLayer.Concretes
                 var cityFilter = _mapper.Map<Expression<Func<CityViewModel, bool>>, Expression<Func<City, bool>>>
                     (filter);
                 var cities = _unitOfWork.CityRepository.GetAll(cityFilter, includeEntities: "Districts");
-                ICollection<CityViewModel> list =
-                    _mapper.Map<IQueryable<City>, ICollection<CityViewModel>>(cities);
+                //ICollection<CityViewModel> list =
+                //    _mapper.Map<IQueryable<City>, ICollection<CityViewModel>>(cities);
+                //**
+                ICollection<CityViewModel> list= new  List<CityViewModel>();
+                foreach (var item in cities)
+                {
+                    CityViewModel c = new CityViewModel()
+                    {
+                        CityName=item.CityName,
+                        CreatedDate=item.CreatedDate,
+                        Id=item.Id,
+                        PlateCode=item.PlateCode
+                    };
+                    list.Add(c);
+                }
+                //**
                 //eğer mapper olmasaydı cityname=item.cityname ... seklindeki inner joinle ugrasırdık
                 return new SuccessDataResult<ICollection<CityViewModel>>(list, $"{list.Count} adet il listelendi!");
             }

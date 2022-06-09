@@ -10,7 +10,7 @@ namespace MHRS_ApplicationEntityLayer.ViewModels
 {
     public class ClinicViewModel
     {
-        public byte Id { get; set; }
+        public int Id { get; set; }
         public DateTime CreatedDate { get; set; }
         [Required]
         [StringLength(100, MinimumLength = 2, ErrorMessage = "Klinik adı en az 2 en çok 100 karakter olabilir!")]

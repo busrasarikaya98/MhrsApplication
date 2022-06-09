@@ -11,6 +11,6 @@ namespace MHRS_ApplicationBusinessLayer.Abstracts
 {
     public interface IAppointmentHourService
     {
-        IDataResult<ICollection<AppointmentViewModel>> GetAll(Expression<Func<AppointmentViewModel, bool>> filter);
+        IDataResult<ICollection<AppointmentHourViewModel>> GetAll(Expression<Func<AppointmentHourViewModel, bool>> filter);
     }
 }
